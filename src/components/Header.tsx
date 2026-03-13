@@ -18,7 +18,7 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-secondary/95 backdrop-blur-md border-b border-secondary">
       <div className="container mx-auto px-4 flex items-center justify-between h-16 md:h-20">
         <a href="#home" className="flex items-center gap-2">
-          <img src="/LOGO.png" alt="LKTaxi Logo" className="h-10 md:h-12 w-auto" />
+          <img src="/LOGO.png" alt="LKTaxi Logo" className="h-12 md:h-14 w-auto" />
         </a>
 
         {/* Desktop nav */}
@@ -35,9 +35,9 @@ const Header = () => {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
-          <a href="tel:+94716520690" className="flex items-center gap-2 text-primary font-semibold text-sm">
+          <a href="tel:+94705000526" className="flex items-center gap-2 text-primary font-semibold text-sm">
             <Phone className="w-4 h-4" />
-            +94 716520690
+            +94 70 5000 526
           </a>
         </div>
 
@@ -65,9 +65,9 @@ const Header = () => {
                 {item.label}
               </a>
             ))}
-            <a href="tel:+94716520690" className="px-4 py-3 text-primary font-semibold text-sm flex items-center gap-2">
+            <a href="tel:+94705000526" className="px-4 py-3 text-primary font-semibold text-sm flex items-center gap-2">
               <Phone className="w-4 h-4" />
-              +94 716520690
+              +94 70 5000 526
             </a>
           </nav>
         </div>

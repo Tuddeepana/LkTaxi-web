@@ -47,7 +47,7 @@ const Footer = () => (
             <li>379 Jayasirimawatha</li>
             <li>Thissamaharama, Sri Lanka</li>
             <li>
-              <a href="tel:+94716520690" className="hover:text-primary transition-colors">+94 716520690</a>
+              <a href="tel:+94705000526" className="hover:text-primary transition-colors">+94 70 5000 526</a>
             </li>
             <li>
               <a href="mailto:info@slgotravel.com" className="hover:text-primary transition-colors">info@slgotravel.com</a>

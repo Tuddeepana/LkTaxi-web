@@ -1,4 +1,4 @@
-export const WHATSAPP_NUMBER = "94716520690";
+export const WHATSAPP_NUMBER = "94705000526";
 
 export const ridePricing: Record<string, Record<string, number>> = {
   colombo_galle: { "MINI CAR": 12000, "SEDAN": 15000, "KDH": 20000, "KDH HIGHROOF": 23000 },

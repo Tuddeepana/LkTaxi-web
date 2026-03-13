@@ -33,7 +33,7 @@ const ContactSection = () => {
             <div className="space-y-4">
               {[
                 { icon: MapPin, label: "Address", value: "379 Jayasirimawatha, Thissamaharama, Sri Lanka" },
-                { icon: Phone, label: "Phone", value: "+94 716520690", href: "tel:+94716520690" },
+                { icon: Phone, label: "Phone", value: "+94 70 5000 526", href: "tel:+94705000526" },
                 { icon: Mail, label: "Email", value: "info@slgotravel.com", href: "mailto:info@slgotravel.com" },
               ].map((item) => (
                 <div key={item.label} className="flex items-start gap-4">
