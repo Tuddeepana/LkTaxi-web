@@ -65,15 +65,23 @@ function BookRideForm() {
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
   const [date, setDate] = useState<Date>(new Date());
-  const [time, setTime] = useState(() => {
+  const [hour, setHour] = useState(() => {
     const now = new Date();
     const h = now.getHours();
-    const m = now.getMinutes();
-    const ampm = h >= 12 ? "PM" : "AM";
     const h12 = h % 12 || 12;
-    return `${h12}:${m.toString().padStart(2, "0")} ${ampm}`;
+    return h12.toString();
+  });
+  const [minute, setMinute] = useState(() => {
+    const now = new Date();
+    return now.getMinutes().toString().padStart(2, "0");
+  });
+  const [ampm, setAmpm] = useState(() => {
+    const now = new Date();
+    return now.getHours() >= 12 ? "PM" : "AM";
   });
   const [vehicle, setVehicle] = useState("");
+
+  const time = `${hour}:${minute} ${ampm}`;
 
   const fare = useMemo(() => {
     if (!pickup || !drop || !vehicle) return null;
@@ -93,13 +101,7 @@ function BookRideForm() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <DatePickerField date={date} setDate={setDate} />
-        <div>
-          <label className="text-xs font-medium text-muted-foreground mb-1 block">Pickup Time</label>
-          <div className="relative">
-            <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input value={time} onChange={(e) => setTime(e.target.value)} className="pl-10" placeholder="10:00 AM" />
-          </div>
-        </div>
+        <TimePickerField hour={hour} setHour={setHour} minute={minute} setMinute={setMinute} ampm={ampm} setAmpm={setAmpm} />
       </div>
       <SelectField label="Vehicle Type" icon={<Car className="w-4 h-4" />} value={vehicle} onValueChange={setVehicle} options={[...vehicles]} />
       
@@ -151,7 +153,7 @@ function CustomRideForm() {
 function BookTourForm() {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
-  const vehicle = "SEDAN";
+  const [vehicle, setVehicle] = useState("Sedan");
 
   const days = useMemo(() => {
     const diff = Math.max(1, Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
@@ -172,10 +174,7 @@ function BookTourForm() {
         <DatePickerField label="Start Date" date={startDate} setDate={setStartDate} />
         <DatePickerField label="End Date" date={endDate} setDate={setEndDate} />
       </div>
-      <div>
-        <label className="text-xs font-medium text-muted-foreground mb-1 block">Vehicle Type</label>
-        <Input value="Sedan" readOnly />
-      </div>
+      <SelectField label="Vehicle Type" icon={<Car className="w-4 h-4" />} value={vehicle} onValueChange={setVehicle} options={Object.keys(tourPricing)} />
 
       {totalPrice !== null && (
         <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 text-center">
@@ -237,6 +236,55 @@ function DatePickerField({ date, setDate, label = "Pickup Date" }: { date: Date;
           <Calendar mode="single" selected={date} onSelect={(d) => d && setDate(d)} initialFocus className="p-3 pointer-events-auto" />
         </PopoverContent>
       </Popover>
+    </div>
+  );
+}
+
+function TimePickerField({ hour, setHour, minute, setMinute, ampm, setAmpm }: { hour: string; setHour: (h: string) => void; minute: string; setMinute: (m: string) => void; ampm: string; setAmpm: (a: string) => void }) {
+  const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
+  const minutes = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, "0"));
+
+  return (
+    <div>
+      <label className="text-xs font-medium text-muted-foreground mb-1 block">Pickup Time</label>
+      <div className="flex gap-2 items-end">
+        <div className="flex-1">
+          <Select value={hour} onValueChange={setHour}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {hours.map((h) => (
+                <SelectItem key={h} value={h}>{h}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <span className="text-lg font-semibold text-foreground mb-2">:</span>
+        <div className="flex-1">
+          <Select value={minute} onValueChange={setMinute}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {minutes.map((m) => (
+                <SelectItem key={m} value={m}>{m}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex-1">
+          <Select value={ampm} onValueChange={setAmpm}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="AM">AM</SelectItem>
+              <SelectItem value="PM">PM</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
     </div>
   );
 }

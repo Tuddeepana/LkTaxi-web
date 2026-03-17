@@ -3,7 +3,10 @@ export const WHATSAPP_NUMBER = "94705000526";
 const TISSAMAHARAMA_PICKUP = "Tissamaharama";
 
 export const tourPricing: Record<string, number> = {
-  SEDAN: 25000,
+  "Wagon R": 15000,
+  "Sedan": 20000,
+  "KDH Flatroof": 25000,
+  "KDH Highroof": 30000,
 };
 
 export const pickupLocations = [TISSAMAHARAMA_PICKUP];
