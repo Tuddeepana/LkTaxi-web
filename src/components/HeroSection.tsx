@@ -8,6 +8,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import Typewriter from "typewriter-effect";
 import { calculateRideFare, tourPricing, pickupLocations, dropLocations, vehicles, generateWhatsAppURL } from "@/data/pricing";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -33,11 +34,24 @@ const HeroSection = ({ title, subtitle }: HeroSectionProps) => {
       </div>
       <div className="relative container mx-auto px-4 py-12 md:py-20">
         <div className="max-w-2xl mb-8 md:mb-12">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-secondary-foreground mb-4 leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-secondary-foreground mb-4 leading-tight min-h-[120px] md:min-h-[160px]">
             {title ? (
               title
             ) : (
-              <>Your Trusted <span className="text-primary">Taxi Service</span> in Sri Lanka</>
+              <Typewriter
+                options={{
+                  strings: [
+                    'Your Trusted <span class="text-primary">Taxi Service</span> in Sri Lanka',
+                    'Book Your <span class="text-primary">Tour</span>',
+                    'Book Your Private <span class="text-primary">Safari</span>',
+                    'Book Your Shared <span class="text-primary">Safari</span>'
+                  ],
+                  autoStart: true,
+                  loop: true,
+                  delay: 50,
+                  deleteSpeed: 30,
+                }}
+              />
             )}
           </h1>
           <p className="text-lg text-secondary-foreground/70">
