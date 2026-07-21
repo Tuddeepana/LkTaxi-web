@@ -4,9 +4,10 @@ import type { FareResult as FareResultType } from "@/types/booking";
 
 interface FareResultProps {
   result: FareResultType | null;
+  pickupTimeLabel?: string;
 }
 
-export function FareResult({ result }: FareResultProps) {
+export function FareResult({ result, pickupTimeLabel }: FareResultProps) {
   if (!result) {
     return (
       <div className="rounded-2xl border border-dashed border-border bg-muted/40 p-5 text-sm leading-6 text-muted-foreground sm:p-6">
@@ -23,7 +24,7 @@ export function FareResult({ result }: FareResultProps) {
     <div className="rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground sm:text-sm sm:normal-case sm:tracking-normal">Estimated Fare</p>
+          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground sm:text-sm sm:normal-case sm:tracking-normal">LK TAXI</p>
           <h3 className="text-xl font-bold text-foreground sm:text-2xl">LKR {displayPrice}</h3>
         </div>
         <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/10">
@@ -34,6 +35,7 @@ export function FareResult({ result }: FareResultProps) {
       <div className="grid gap-3 text-sm sm:grid-cols-2">
         <InfoRow label="Pickup" value={result.pickup.name} />
         <InfoRow label="Drop" value={result.drop.name} />
+        {pickupTimeLabel ? <InfoRow label="Pickup Time" value={pickupTimeLabel} /> : null}
         <InfoRow label="Distance" value={formatDistance(result.distanceKm)} />
         <InfoRow label="Estimated Time" value={formatDuration(result.durationMinutes)} />
       </div>
