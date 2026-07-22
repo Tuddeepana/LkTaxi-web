@@ -1,6 +1,5 @@
 import { CarFront, CarTaxiFront, TramFront } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { vehicleRates } from "@/services/fareService";
 import type { VehicleType } from "@/types/booking";
 
 interface VehicleSelectorProps {
@@ -16,22 +15,34 @@ const vehicleOptions: Array<{
   description: string;
 }> = [
   {
+    type: "Wagonr",
+    label: "Wagonr",
+    icon: CarTaxiFront,
+    description: "Compact and economical for short city rides.",
+  },
+  {
     type: "Sedan",
     label: "Sedan",
-    icon: CarTaxiFront,
-    description: "Comfortable for couples and small groups.",
-  },
-  {
-    type: "Van",
-    label: "Van",
     icon: CarFront,
-    description: "Ideal for families and medium-sized groups.",
+    description: "Comfortable for couples and small families.",
   },
   {
-    type: "SUV",
-    label: "SUV",
+    type: "Mini van",
+    label: "Mini van",
     icon: TramFront,
-    description: "More space and a premium long-distance ride.",
+    description: "Spacious option for families and luggage.",
+  },
+  {
+    type: "KDH",
+    label: "KDH",
+    icon: CarFront,
+    description: "Reliable group travel for longer journeys.",
+  },
+  {
+    type: "KDH High roof",
+    label: "KDH High roof",
+    icon: TramFront,
+    description: "Extra headroom and comfort for larger groups.",
   },
 ];
 
@@ -61,7 +72,6 @@ export function VehicleSelector({ value, onChange, error }: VehicleSelectorProps
                 </span>
                 <div className="min-w-0">
                   <p className="font-semibold text-foreground">{option.label}</p>
-                  <p className="text-xs text-muted-foreground">LKR {vehicleRates[option.type]}/km</p>
                 </div>
               </div>
               <p className="mt-3 text-xs leading-relaxed text-muted-foreground sm:mt-3">{option.description}</p>

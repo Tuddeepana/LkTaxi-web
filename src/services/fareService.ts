@@ -1,9 +1,11 @@
 import type { VehicleType } from "@/types/booking";
 
 export const vehicleRates: Record<VehicleType, number> = {
-  Sedan: 150,
-  Van: 200,
-  SUV: 250,
+  Wagonr: 120,
+  Sedan: 140,
+  "Mini van": 150,
+  KDH: 200,
+  "KDH High roof": 230,
 };
 
 export function calculateFare(distanceKm: number, vehicleType: VehicleType): number {

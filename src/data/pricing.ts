@@ -7,7 +7,7 @@ export const tourPricing: Record<string, number> = {
   "KDH HIGH ROOF": 30000,
 };
 
-export const vehicles = ["MINI CAR", "SEDAN", "MINI VAN", "KDH FLAT ROOF", "KDH HIGH ROOF"] as const;
+export const vehicles = ["Wagonr", "Sedan", "Mini van", "KDH", "KDH High roof"] as const;
 export type VehicleType = (typeof vehicles)[number];
 
 export const countries = [

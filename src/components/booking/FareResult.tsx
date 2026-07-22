@@ -26,6 +26,7 @@ export function FareResult({ result, pickupTimeLabel }: FareResultProps) {
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground sm:text-sm sm:normal-case sm:tracking-normal">LK TAXI</p>
           <h3 className="text-xl font-bold text-foreground sm:text-2xl">LKR {displayPrice}</h3>
+          <p className="mt-1 text-xs font-medium text-red-600">Final price is negotiable.</p>
         </div>
         <Badge variant="secondary" className="bg-primary/10 text-primary hover:bg-primary/10">
           {result.vehicle}

@@ -6,7 +6,7 @@ export interface Location {
   placeId?: string;
 }
 
-export type VehicleType = "Sedan" | "Van" | "SUV";
+export type VehicleType = "Wagonr" | "Sedan" | "Mini van" | "KDH" | "KDH High roof";
 
 export interface RouteResult {
   distanceKm: number;
