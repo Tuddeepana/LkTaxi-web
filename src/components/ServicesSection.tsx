@@ -1,7 +1,7 @@
-import airportImg from "@/assets/airport-transfer.webp";
-import dayToursImg from "@/assets/day-tours.jpg";
-import longToursImg from "@/assets/long-tours.webp";
-import hotelImg from "@/assets/hotel-transfer.jpg";
+import airportImg from "@/assets/sri-lanka-airport-taxi-transfer-service.webp";
+import dayToursImg from "@/assets/sri-lanka-private-day-tours-from-colombo.jpg";
+import longToursImg from "@/assets/sri-lanka-private-multi-day-round-tours.webp";
+import hotelImg from "@/assets/sri-lanka-hotel-taxi-transfer-service.webp";
 
 const services = [
   {

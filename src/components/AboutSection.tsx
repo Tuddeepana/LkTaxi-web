@@ -55,7 +55,7 @@ const AboutSection = () => {
 
             {/* Desktop Image */}
             <img
-              src="/srilanaka_tour.webp"
+              src="/sri-lanka-private-taxi-and-tours-hero.webp"
               alt="Sri Lanka Tour Map & Highlights"
               className="hidden md:block w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-[1.02]"
               loading="lazy"
@@ -63,7 +63,7 @@ const AboutSection = () => {
 
             {/* Mobile Image */}
             <img
-              src="/srilanka_tour_mo.webp"
+              src="/sri-lanka-private-taxi-and-tours-mobile.webp"
               alt="Sri Lanka Tour Map & Highlights Mobile"
               className="block md:hidden w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-[1.02]"
               loading="lazy"

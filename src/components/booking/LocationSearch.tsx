@@ -182,7 +182,7 @@ export function LocationSearch({
               setIsOpen(true);
             }}
             onFocus={() => setIsOpen(true)}
-            onBlur={() => window.setTimeout(() => setIsOpen(false), 150)}
+            onBlur={() => setIsOpen(false)}
             placeholder={placeholder}
             disabled={disabled}
             className="h-11 border-0 bg-transparent px-0 shadow-none focus-visible:ring-0"
@@ -219,7 +219,10 @@ export function LocationSearch({
         </div>
 
         {isOpen && query.trim().length >= 2 ? (
-          <div className="absolute z-30 mt-2 w-full overflow-hidden rounded-xl border border-border bg-popover shadow-xl">
+          <div 
+            className="absolute z-30 mt-2 w-full overflow-hidden rounded-xl border border-border bg-popover shadow-xl"
+            onMouseDown={(e) => e.preventDefault()}
+          >
             <Command shouldFilter={false}>
               <CommandList className="max-h-64 sm:max-h-72">
                 <CommandGroup heading="Search results">

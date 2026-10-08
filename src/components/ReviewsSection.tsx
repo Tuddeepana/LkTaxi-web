@@ -4,28 +4,32 @@ import { Button } from "@/components/ui/button";
 
 const clientPhotos = [
   {
-    src: "/i.webp",
+    src: "/tourist-couple-sri-lanka-taxi-review.webp",
     title: "Happy Guests Exploring",
     subtitle: "Unforgettable Sri Lanka Tour",
     tag: "Sigiriya Trip",
+    alt: "Happy tourist couple taking a private taxi in Sri Lanka with LkTaxi",
   },
   {
-    src: "/i2.webp",
+    src: "/family-sri-lanka-airport-transfer-review.webp",
     title: "Safe & Comfortable Drives",
     subtitle: "Relaxing Journey with LKTaxi",
     tag: "Airport Transfer",
+    alt: "Family arriving for their Colombo airport taxi transfer",
   },
   {
-    src: "/i3.webp",
+    src: "/friends-yala-safari-jeep-tour-review.webp",
     title: "Island Adventures",
     subtitle: "Scenic Routes & Warm Smiles",
     tag: "Yala Safari",
+    alt: "Friends enjoying a Yala National Park safari jeep tour",
   },
   {
-    src: "/i4.webp",
+    src: "/solo-traveler-sri-lanka-private-taxi-review.webp",
     title: "Satisfied Travelers",
     subtitle: "Trusted by Visitors Worldwide",
     tag: "Ella Excursion",
+    alt: "Solo traveler reviewing their Sri Lanka private taxi experience",
   },
 ];
 
@@ -72,7 +76,7 @@ const ReviewsSection = () => (
             {/* Image with zoom micro-animation */}
             <img
               src={photo.src}
-              alt={photo.title}
+              alt={photo.alt || photo.title}
               className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               loading="lazy"
             />
