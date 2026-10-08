@@ -8,6 +8,8 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import WhatsAppButton from "../components/WhatsAppButton";
 import ServicesSection from "../components/ServicesSection";
+import AboutSection from "../components/AboutSection";
+import ReviewsSection from "../components/ReviewsSection";
 import FAQSection from "../components/FAQSection";
 import ContactSection from "../components/ContactSection";
 import { parseDistanceKm, getFareTable, formatLKR } from "@/lib/fare-estimate";
@@ -104,35 +106,37 @@ const RoutePage = () => {
               <li>Available 24 hours a day, 7 days a week</li>
             </ul>
 
-            {fareTable.length > 0 && (
-              <>
-                <h3 className="text-2xl font-semibold mt-8 mb-4">Estimated Taxi Fares</h3>
-                <div className="overflow-x-auto mb-8">
-                  <table className="w-full text-left border-collapse">
-                    <thead>
-                      <tr className="border-b border-border bg-muted/50">
-                        <th className="p-3 font-medium">Vehicle Type</th>
-                        <th className="p-3 font-medium">Passengers</th>
-                        <th className="p-3 font-medium">Est. Price (LKR)</th>
-                        <th className="p-3 font-medium">Est. Price (USD)</th>
+            <h3 id="fares" className="text-2xl font-semibold mt-8 mb-4 scroll-mt-24">Estimated Taxi Fares</h3>
+            {fareTable.length > 0 ? (
+              <div className="overflow-x-auto mb-8">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-border bg-muted/50">
+                      <th className="p-3 font-medium">Vehicle Type</th>
+                      <th className="p-3 font-medium">Passengers</th>
+                      <th className="p-3 font-medium">Est. Price (LKR)</th>
+                      <th className="p-3 font-medium">Est. Price (USD)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {fareTable.map((fare, i) => (
+                      <tr key={i} className="border-b border-border">
+                        <td className="p-3">{fare.label}</td>
+                        <td className="p-3">{fare.passengers} pax</td>
+                        <td className="p-3">{formatLKR(fare.lkr)}</td>
+                        <td className="p-3">~ ${fare.usd}</td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {fareTable.map((fare, i) => (
-                        <tr key={i} className="border-b border-border">
-                          <td className="p-3">{fare.label}</td>
-                          <td className="p-3">{fare.passengers} pax</td>
-                          <td className="p-3">{formatLKR(fare.lkr)}</td>
-                          <td className="p-3">~ ${fare.usd}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    * Prices are estimated based on typical distance. Highway tolls and parking charges (if applicable) are extra. Contact us on WhatsApp for exact quotes.
-                  </p>
-                </div>
-              </>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="text-xs text-muted-foreground mt-2">
+                  * Prices are estimated based on typical distance. Highway tolls and parking charges (if applicable) are extra. Contact us on WhatsApp for exact quotes.
+                </p>
+              </div>
+            ) : (
+              <p className="text-muted-foreground mb-8">
+                Prices for this specific route depend on exact pickup and drop-off locations. Please contact us via WhatsApp for a custom quote.
+              </p>
             )}
 
             {relatedRoutes.length > 0 && (
@@ -140,7 +144,7 @@ const RoutePage = () => {
                 <h3 className="text-2xl font-semibold mt-8 mb-4">Related Transfers</h3>
                 <div className="flex flex-col gap-2">
                   {relatedRoutes.map((r, i) => (
-                    <Link key={i} to={`/taxi/${getRouteSlug(r)}`} className="text-primary hover:underline">
+                    <Link key={i} to={`/taxi/${getRouteSlug(r)}#fares`} className="text-primary hover:underline">
                       Taxi from {formatLocationName(r.from)} to {formatLocationName(r.to)}
                     </Link>
                   ))}
@@ -149,6 +153,9 @@ const RoutePage = () => {
             )}
           </div>
         </section>
+
+        <AboutSection />
+        <ReviewsSection />
 
         {/* Route-specific FAQ or generic FAQ */}
         {content?.faqs && content.faqs.length > 0 ? (
