@@ -18,14 +18,14 @@ const safariJeeps = [
     image: "/mahindra-bolero-safari-jeep-yala.png", 
     desc: "Reliable and comfortable 4x4 safari jeep, perfectly suited for the rugged terrain of Yala National Park.", 
     passengers: "1-6",
-    alt: "Mahindra Bolero Safari Jeep Yala Sri Lanka"
+    alt: "Mahindra Bolero 4x4 safari jeep used for Yala National Park tours"
   },
   { 
     name: "TOYOTA HILUX", 
     image: "/toyota-hilux-safari-jeep-yala.png", 
     desc: "Premium 4x4 safari experience with extra comfort and elevated seating for superior wildlife viewing.", 
     passengers: "1-6",
-    alt: "Toyota Hilux Safari Jeep Tissamaharama Sri Lanka"
+    alt: "Toyota Hilux comfortable safari jeep for Yala wildlife tours"
   },
 ];
 

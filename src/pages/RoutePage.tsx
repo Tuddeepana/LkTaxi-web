@@ -1,6 +1,6 @@
 import TransferGuide from "@/components/TransferGuide";
-import { useParams, Navigate } from "react-router-dom";
-import { parseRouteSlug } from "../data/routes";
+import { useParams, Navigate, Link } from "react-router-dom";
+import { parseRouteSlug, popularRoutes, getRouteSlug } from "../data/routes";
 import { formatLocationName } from "../data/locations";
 import { routeContent } from "../data/route-content";
 import HeroSection from "../components/HeroSection";
@@ -10,6 +10,7 @@ import WhatsAppButton from "../components/WhatsAppButton";
 import ServicesSection from "../components/ServicesSection";
 import FAQSection from "../components/FAQSection";
 import ContactSection from "../components/ContactSection";
+import { parseDistanceKm, getFareTable, formatLKR } from "@/lib/fare-estimate";
 
 const RoutePage = () => {
   const { slug: routeSlug } = useParams<{ slug: string }>();
@@ -24,6 +25,14 @@ const RoutePage = () => {
   const fromName = formatLocationName(from);
   const toName = formatLocationName(to);
   const content = routeSlug ? routeContent[routeSlug] : undefined;
+
+  const distanceKm = content ? parseDistanceKm(content.distance) : 0;
+  const fareTable = distanceKm > 0 ? getFareTable(distanceKm) : [];
+  const startingPrice = fareTable.length > 0 ? formatLKR(fareTable[0].lkr) : "Contact Us";
+
+  const relatedRoutes = popularRoutes
+    .filter(r => (r.from === from || r.to === to) && (r.from !== from || r.to !== to))
+    .slice(0, 3);
 
   return (
     <div className="min-h-screen bg-background">
@@ -49,7 +58,7 @@ const RoutePage = () => {
               </div>
               <div className="bg-primary/5 rounded-xl p-5 border border-primary/10">
                 <p className="text-sm text-muted-foreground mb-1">Starting From</p>
-                <p className="text-2xl font-bold text-primary">{content.priceRange}</p>
+                <p className="text-2xl font-bold text-primary">{startingPrice}</p>
               </div>
             </div>
           </section>
@@ -94,6 +103,50 @@ const RoutePage = () => {
               <li>Confirm tolls, parking and waiting charges in your quote</li>
               <li>Available 24 hours a day, 7 days a week</li>
             </ul>
+
+            {fareTable.length > 0 && (
+              <>
+                <h3 className="text-2xl font-semibold mt-8 mb-4">Estimated Taxi Fares</h3>
+                <div className="overflow-x-auto mb-8">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-border bg-muted/50">
+                        <th className="p-3 font-medium">Vehicle Type</th>
+                        <th className="p-3 font-medium">Passengers</th>
+                        <th className="p-3 font-medium">Est. Price (LKR)</th>
+                        <th className="p-3 font-medium">Est. Price (USD)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {fareTable.map((fare, i) => (
+                        <tr key={i} className="border-b border-border">
+                          <td className="p-3">{fare.label}</td>
+                          <td className="p-3">{fare.passengers} pax</td>
+                          <td className="p-3">{formatLKR(fare.lkr)}</td>
+                          <td className="p-3">~ ${fare.usd}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    * Prices are estimated based on typical distance. Highway tolls and parking charges (if applicable) are extra. Contact us on WhatsApp for exact quotes.
+                  </p>
+                </div>
+              </>
+            )}
+
+            {relatedRoutes.length > 0 && (
+              <>
+                <h3 className="text-2xl font-semibold mt-8 mb-4">Related Transfers</h3>
+                <div className="flex flex-col gap-2">
+                  {relatedRoutes.map((r, i) => (
+                    <Link key={i} to={`/taxi/${getRouteSlug(r)}`} className="text-primary hover:underline">
+                      Taxi from {formatLocationName(r.from)} to {formatLocationName(r.to)}
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </section>
 

@@ -182,7 +182,10 @@ export function LocationSearch({
               setIsOpen(true);
             }}
             onFocus={() => setIsOpen(true)}
-            onBlur={() => setIsOpen(false)}
+            onBlur={() => {
+              // Delay closing to allow onSelect/onClick to fire on dropdown items
+              setTimeout(() => setIsOpen(false), 200);
+            }}
             placeholder={placeholder}
             disabled={disabled}
             className="h-11 border-0 bg-transparent px-0 shadow-none focus-visible:ring-0"

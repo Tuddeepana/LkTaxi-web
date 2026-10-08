@@ -56,7 +56,7 @@ const AboutSection = () => {
             {/* Desktop Image */}
             <img
               src="/sri-lanka-private-taxi-and-tours-hero.webp"
-              alt="Sri Lanka Tour Map & Highlights"
+              alt="LKTaxi providing comfortable private transfers and tours across Sri Lanka"
               className="hidden md:block w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-[1.02]"
               loading="lazy"
             />
@@ -64,7 +64,7 @@ const AboutSection = () => {
             {/* Mobile Image */}
             <img
               src="/sri-lanka-private-taxi-and-tours-mobile.webp"
-              alt="Sri Lanka Tour Map & Highlights Mobile"
+              alt="LKTaxi providing comfortable private transfers and tours across Sri Lanka on mobile"
               className="block md:hidden w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-[1.02]"
               loading="lazy"
             />
