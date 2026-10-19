@@ -1,14 +1,17 @@
 import TransferGuide from "@/components/TransferGuide";
-import { useParams, Navigate } from "react-router-dom";
-import { parseRouteSlug } from "../data/routes";
+import { useParams, Navigate, Link } from "react-router-dom";
+import { parseRouteSlug, popularRoutes, getRouteSlug } from "../data/routes";
 import { formatLocationName } from "../data/locations";
+import { routeContent } from "../data/route-content";
 import HeroSection from "../components/HeroSection";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import WhatsAppButton from "../components/WhatsAppButton";
 import ServicesSection from "../components/ServicesSection";
+import AboutSection from "../components/AboutSection";
 import FAQSection from "../components/FAQSection";
 import ContactSection from "../components/ContactSection";
+import { parseDistanceKm, getFareTable, formatLKR } from "@/lib/fare-estimate";
 
 const RoutePage = () => {
   const { slug: routeSlug } = useParams<{ slug: string }>();
@@ -22,8 +25,15 @@ const RoutePage = () => {
   const { from, to } = parsedRoute;
   const fromName = formatLocationName(from);
   const toName = formatLocationName(to);
+  const content = routeSlug ? routeContent[routeSlug] : undefined;
 
+  const distanceKm = content ? parseDistanceKm(content.distance) : 0;
+  const fareTable = distanceKm > 0 ? getFareTable(distanceKm) : [];
+  const startingPrice = fareTable.length > 0 ? formatLKR(fareTable[0].lkr) : "Contact Us";
 
+  const relatedRoutes = popularRoutes
+    .filter(r => (r.from === from || r.to === to) && (r.from !== from || r.to !== to))
+    .slice(0, 3);
 
   return (
     <div className="min-h-screen bg-background">
@@ -31,35 +41,153 @@ const RoutePage = () => {
       <main>
         <HeroSection 
           title={`Taxi from ${fromName} to ${toName}`}
-          subtitle={`Arrange a private transfer from ${fromName} to ${toName}. Confirm your pickup, vehicle and price with our team.`}
+          subtitle={content?.description || `Arrange a private transfer from ${fromName} to ${toName}. Confirm your pickup, vehicle and price with our team.`}
         />
         <TransferGuide route={routeSlug} />
+
+        {/* Route details with distance, time, and pricing */}
+        {content && (
+          <section className="container py-8 max-w-4xl">
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div className="bg-primary/5 rounded-xl p-5 border border-primary/10">
+                <p className="text-sm text-muted-foreground mb-1">Distance</p>
+                <p className="text-2xl font-bold text-foreground">{content.distance}</p>
+              </div>
+              <div className="bg-primary/5 rounded-xl p-5 border border-primary/10">
+                <p className="text-sm text-muted-foreground mb-1">Travel Time</p>
+                <p className="text-2xl font-bold text-foreground">{content.duration}</p>
+              </div>
+              <div className="bg-primary/5 rounded-xl p-5 border border-primary/10">
+                <p className="text-sm text-muted-foreground mb-1">Starting From</p>
+                <p className="text-2xl font-bold text-primary">{startingPrice}</p>
+              </div>
+            </div>
+          </section>
+        )}
+
         <ServicesSection />
+
         <section className="container py-16">
           <h2 className="text-3xl font-bold mb-6 text-center">Transfer from {fromName} to {toName}</h2>
           <div className="prose prose-lg max-w-4xl mx-auto dark:prose-invert">
             <p>
-              Looking for a comfortable and safe taxi from {fromName} to {toName}? LKTaxi 
-              provides professional private transfer services between these destinations. 
-              Avoid the crowds of public transport and enjoy the beauty of Sri Lanka 
-              from the comfort of your private car.
+              {content?.description || `Looking for a comfortable and safe taxi from ${fromName} to ${toName}? LKTaxi provides professional private transfer services between these destinations. Avoid the crowds of public transport and enjoy the beauty of Sri Lanka from the comfort of your private car.`}
             </p>
-            <p>
-              Our drivers are highly experienced in the long-distance route from {fromName} to {toName}, 
-              ensuring you get to your destination quickly and safely. We offer a variety of 
-              vehicles to suit your needs, from standard sedans to large vans for families and groups.
+            <p className="text-muted-foreground leading-relaxed mt-4">
+              Book your private transfer with LKTaxi, a trusted <strong>taxi Sri Lanka</strong> service providing comfortable, air-conditioned vehicles, transparent pricing, and reliable door-to-door pickups across the island.
             </p>
+
+            {content?.scenicHighlights && (
+              <>
+                <h3 className="text-2xl font-semibold mt-8 mb-4">Scenic Highlights Along the Route</h3>
+                <ul className="list-disc pl-6 space-y-2">
+                  {content.scenicHighlights.map((h, i) => (
+                    <li key={i}>{h}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+
+            {content?.travelTips && (
+              <>
+                <h3 className="text-2xl font-semibold mt-8 mb-4">Travel Tips</h3>
+                <ul className="list-disc pl-6 space-y-2">
+                  {content.travelTips.map((t, i) => (
+                    <li key={i}>{t}</li>
+                  ))}
+                </ul>
+              </>
+            )}
+
             <h3 className="text-2xl font-semibold mt-8 mb-4">Journey Highlights</h3>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Direct door-to-door transfer</li>
-              <li>Optional stops for photo opportunities or refreshments</li>
-              <li>Fully air-conditioned modern vehicles</li>
-              <li>Confirm tolls, parking and waiting charges in your quote</li>
-              <li>Available 24 hours a day, 7 days a week</li>
+              <li>Direct door-to-door private transfer with an experienced, English-speaking <strong>Srilankan taxi</strong> driver</li>
+              <li>Optional scenic stops for photography, tea factory tours, or refreshments along the way</li>
+              <li>Fully air-conditioned, well-maintained modern vehicles with dedicated luggage capacity</li>
+              <li>Upfront fixed quotes with confirmed highway tolls, parking, and waiting time</li>
+              <li>Available 24 hours a day, 7 days a week with flexible departure scheduling</li>
             </ul>
+
+            <h3 id="fares" className="text-2xl font-semibold mt-8 mb-4 scroll-mt-24">Estimated Taxi Fares</h3>
+            {fareTable.length > 0 ? (
+              <div className="overflow-x-auto mb-8">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-border bg-muted/50">
+                      <th className="p-3 font-medium">Vehicle Type</th>
+                      <th className="p-3 font-medium">Passengers</th>
+                      <th className="p-3 font-medium">Est. Price (LKR)</th>
+                      <th className="p-3 font-medium">Est. Price (USD)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {fareTable.map((fare, i) => (
+                      <tr key={i} className="border-b border-border">
+                        <td className="p-3">{fare.label}</td>
+                        <td className="p-3">{fare.passengers} pax</td>
+                        <td className="p-3">{formatLKR(fare.lkr)}</td>
+                        <td className="p-3">~ ${fare.usd}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="text-xs text-muted-foreground mt-2">
+                  * All <strong>taxi Lanka</strong> bookings with LKTaxi include an air-conditioned vehicle, luggage assistance, and door-to-door service. Highway tolls and parking charges (if applicable) are extra and confirmed upfront on WhatsApp.
+                </p>
+              </div>
+            ) : (
+              <p className="text-muted-foreground mb-8">
+                Prices for this specific route depend on exact pickup and drop-off locations. Please contact us via WhatsApp for a custom quote.
+              </p>
+            )}
+
+            {/* Destination Guides Bidirectional Silo Links */}
+            <div className="my-8 p-5 bg-muted/40 rounded-xl border border-border">
+              <h3 className="text-lg font-semibold mb-2">Explore Destination Guides</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Planning your travels beyond this transfer? Read our comprehensive local guides for area attractions, sightseeing stops, and local taxi services:
+              </p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <Link
+                  to={`/taxi/${from}`}
+                  className="p-3 bg-card rounded-lg border border-border hover:border-primary transition-colors text-sm font-medium flex items-center justify-between"
+                >
+                  <span>{fromName} Taxi &amp; Travel Guide</span>
+                  <span className="text-primary">&rarr;</span>
+                </Link>
+                <Link
+                  to={`/taxi/${to}`}
+                  className="p-3 bg-card rounded-lg border border-border hover:border-primary transition-colors text-sm font-medium flex items-center justify-between"
+                >
+                  <span>{toName} Taxi &amp; Travel Guide</span>
+                  <span className="text-primary">&rarr;</span>
+                </Link>
+              </div>
+            </div>
+
+            {relatedRoutes.length > 0 && (
+              <>
+                <h3 className="text-2xl font-semibold mt-8 mb-4">Related Transfers</h3>
+                <div className="flex flex-col gap-2">
+                  {relatedRoutes.map((r, i) => (
+                    <Link key={i} to={`/taxi/${getRouteSlug(r)}#fares`} className="text-primary hover:underline">
+                      Taxi from {formatLocationName(r.from)} to {formatLocationName(r.to)}
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </section>
-        <FAQSection />
+
+        <AboutSection />
+
+        {/* Route-specific FAQ or generic FAQ */}
+        {content?.faqs && content.faqs.length > 0 ? (
+          <FAQSection customFaqs={content.faqs} locationName={`${fromName} to ${toName}`} />
+        ) : (
+          <FAQSection />
+        )}
         <ContactSection />
       </main>
       <Footer />
